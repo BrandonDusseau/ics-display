@@ -7,7 +7,7 @@ $days_forward = 14;		// Number of days to show in the future
 
 $highlight_today = false;						// Whether to highlight events occurring today
 $highlight_calendars = array("exams");			// Calendars to always highlight
-$darken_past = false;							// Whether to darken incomplete items in the past
+$darken_past = true;							// Whether to darken incomplete items in the past
 $darken_calendars = array();		// Calendars to always darken
 $skip_string = "#CMP";								// If this string is present in an item's description, it will be skipped. Use an empty string to disable this.
 

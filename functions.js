@@ -14,7 +14,7 @@ function ajaxcall() {
 		document.getElementById("content").innerHTML=xmlhttp.responseText;
 		}
 	  }
-	xmlhttp.open("GET","test2.php?d=" + decache,true);
+	xmlhttp.open("GET","schedule.php?d=" + decache,true);
 	xmlhttp.send();
 	
 	setTimeout("ajaxcall();", 60000);
