@@ -42,3 +42,17 @@ _Error Reporting_
 - `$show_ical_errors` - Setting this to `true` will display an error if one or
     more iCal sources cannot be read or parsed. Set to `false` to suppress this
     message.
+
+_Reload time_
+- By default, data is reloaded from the ICS files every 60 seconds. This value
+    can be changed in the `ajaxcall()` function of `functions.js`. Please note
+    that the value is in milliseconds.
+
+_Styles_
+- The background image is `bg.jpg` and can be replaced by any image. By default,
+    the background will tile in both directions. Other styles can be modified in
+    the `style.css` file.
+
+# Attributions #
+This project relies on the _ics-parser_ project on Google Code. The repository
+  can be found at https://code.google.com/p/ics-parser/.
