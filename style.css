@@ -41,7 +41,6 @@ body {
 
 .day .heading {
 	font-family: "Ubuntu", sans-serif;
-	color: #fff;
 	background: rgba(0, 0, 0, 0.65);
 	padding: 5px 10px;
 	font-size: 1.8em;
@@ -86,6 +85,10 @@ body {
 
 .highlight .event{
 	color: #ff0;
+}
+
+.error {
+	color: #C32;
 }
 
 .highlight .time {

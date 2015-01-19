@@ -15,8 +15,6 @@
  *           print_r( $ical->events() );
  */
 
-error_reporting(E_ALL);
-
 /**
  * This is the iCal-class
  *

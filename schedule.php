@@ -1,28 +1,26 @@
 <?php
-require "ical-reader.php";
+ini_set("display_errors", "true");
+error_reporting(E_ERROR);
 
-$number_of_events = 7;	// Number of events to display
-$days_back = 7;			// Number of days to show in the past
-$days_forward = 14;		// Number of days to show in the future
+// Load library for parsing iCal files
+require_once("ical-reader.php");
 
-$highlight_today = false;						// Whether to highlight events occurring today
-$highlight_calendars = array("exams");			// Calendars to always highlight
-$darken_past = true;							// Whether to darken incomplete items in the past
-$darken_calendars = array();		// Calendars to always darken
-$skip_string = "#CMP";								// If this string is present in an item's description, it will be skipped. Use an empty string to disable this.
-
-// Set up calendar URLs - use private ICS links from Google Calendar
-$calendar_urls = array(
-	"assignments" => "***REMOVED***",
-	"exams" => "***REMOVED***"
-);
+// Provides calendar settings
+require_once("config.php");
 
 // Create empty array for all relevant events
 $result_array = array();
+$failed = false;
 
 // Add both assignments and exams to the array
 foreach ($calendar_urls as $name => $url) {
 	$this_ical = new ical($url);
+	
+	// Skip calendar if it cannot load
+	if ($this_ical === false) {
+		$failed = true;
+		continue;
+	}
 	
 	$item_count = 0;
 	
@@ -62,8 +60,16 @@ foreach ($calendar_urls as $name => $url) {
 // Sort the remaining array of events by key to put dates in ascending order
 ksort($result_array);
 
+// Display an error if we failed to read a calendar
+if ($failed && $show_ical_errors) {
+	echo "<div class='day'>\n\t<div class='heading error'>Error</div>\n\t<div class='events'>\n" .
+		"\t\t<div class='events-inner'>Unable to read one or more calendars.</div>\n" .
+		"\t</div>\n</div>\n";
+}
+
 $item_count = 0;
 $stop = false;
+
 // Cycle through each date and display it
 foreach ($result_array as $events) {
 	// If we've displayed the maximum number of events, stop.
@@ -76,8 +82,10 @@ foreach ($result_array as $events) {
 		"\t<div class='heading'>". $events[0]['date'] ."</div>\n" .
 		"\t<div class='events'>\n";
 	
-	// Since ICS gives us events in reverse, reverse the array
-	$events = array_reverse($events);
+	// Since ICS gives us events in an arbitrary order, rearrange them
+	usort($events, function ($a, $b) {
+		return date("U", strtotime($a['timestamp'])) - date("U", strtotime($b['timestamp']));
+	});
 	
 	// Loop through each event on this date
     foreach ($events as $event) {
@@ -94,32 +102,28 @@ foreach ($result_array as $events) {
 		
 		$class = ""; // Default the extra classes on the event to none.
 		
-		// Highlight designated calendars
-		if (!empty($higlight_calendars) && in_array($event['calendar'], $highlight_calendars)) {
+		// Highlight designated calendars, those with the appropriate keyword, and today's events, if configured.
+		if ((!empty($highlight_calendars) && in_array($event['calendar'], $highlight_calendars)) ||
+			($highlight_today && strtotime($event['timestamp']) < strtotime("tomorrow") 
+				&& strtotime($event['timestamp']) >= strtotime("today")) ||
+			(!empty($highlight_keyword) && strpos($event["desc"], $highlight_keyword) !== false)) {
+			
 			$class .= " highlight";
 		}
 		
-		// highlight events occurring today
-		if ($highlight_today && strtotime($event['timestamp']) < strtotime("tomorrow") 
-			&& strtotime($event['timestamp']) >= strtotime("today")) {
-			$class .= " highlight";
-		}
-		
-		// Darken designated calendars
-		if (!empty($darken_calendars) && in_array($event['calendar'], $darken_calendars)) {
-			$class .= " darken";
-		}
-		
-		// Darken events in the past
-		if ($darken_past && strtotime($event['timestamp']) < strtotime("now")) {
+		// Darken designated calendars, those with the appropriate keyword, and past events, if configured.
+		if ((!empty($darken_calendars) && in_array($event['calendar'], $darken_calendars)) || 
+			($darken_past && strtotime($event['timestamp']) < strtotime("now")) ||
+			(!empty($darken_keyword) && strpos($event["desc"], $darken_keyword) !== false)) {
+			
 			$class .= " darken";
 		}
 		
 		// Display the event
-		echo "\t\t<div class='events-inner $class'>\n";
-		echo "\t\t\t<div class='time'>" . $event['time'] . "</div>\n";
-		echo "\t\t\t<div class='event'>" . $event['title'] . "</div>\n";
-		echo "\t\t</div>\n";
+		echo "\t\t<div class='events-inner $class'>\n" .
+			"\t\t\t<div class='time'>" . $event['time'] . "</div>\n" .
+			"\t\t\t<div class='event'>" . $event['title'] . "</div>\n" .
+			"\t\t</div>\n";
     }
 	
     echo "\t</div>\n</div>\n";
