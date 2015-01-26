@@ -91,6 +91,21 @@ body {
 	color: #C32;
 }
 
-.highlight .time {
-	/*background-color: #ff0;*/
+#loader {
+	background: url(loader.gif) 3px 50% no-repeat #ddd;
+	color: #000;
+	border-radius: 3px 0 0 0;
+	min-width: 56px;
+	height: 25px;
+	float: right;
+	position: fixed;
+	bottom: 0px;
+	right: 0px;
+}
+
+#loader span {
+	display: inline-block;
+	margin-top: 2px;
+	margin-left: 61px;
+	margin-right: 3px;
 }
