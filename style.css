@@ -80,7 +80,7 @@ body {
 }
 
 .darken .event {
-	color: #888;
+	color: #444;
 }
 
 .highlight .event{
@@ -88,7 +88,7 @@ body {
 }
 
 .darken.highlight .event {
-	color: #ff7;
+	color: #440;
 }
 
 .error {
