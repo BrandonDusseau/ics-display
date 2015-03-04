@@ -87,6 +87,10 @@ body {
 	color: #ff0;
 }
 
+.darken.highlight .event {
+	color: #ff7;
+}
+
 .error {
 	color: #C32;
 }
