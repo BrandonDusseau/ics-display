@@ -1,3 +1,14 @@
+1.2.0 - 13 December 2016
+ * Upgraded iCal library
+ * Added support for recurring events (#2)
+
+1.1.2 - 4 March 2015
+ * Darkened colors on both dark events and dark highlighted events for
+   consistency with darkened timestamp.
+
+1.1.1 - 4 March 2015
+ * Added "darkening" of title for highlighted events.
+
 1.1.0 - 26 January 2015
  * Added calendar caching; if calendar is loaded and connection is lost,
    calendar will remain present until the page is reloaded.
