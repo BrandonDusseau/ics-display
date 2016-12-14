@@ -1,12 +1,7 @@
 <?php
-ini_set("display_errors", "true");
-error_reporting(E_ERROR);
-
-// Load library for parsing iCal files
-require_once("ical-reader.php");
-
-// Provides calendar settings
-require_once("config.php");
+// Load dependencies
+require_once __DIR__ . "/vendor/autoload.php";
+require_once __DIR__ . "/config.php";
 
 // Create empty array for all relevant events
 $result_array = array();
@@ -14,7 +9,7 @@ $failed = false;
 
 // Add both assignments and exams to the array
 foreach ($calendar_urls as $name => $url) {
-	$this_ical = new ical($url);
+	$this_ical = new \ICal\ICal($url);
 
 	// Skip calendar if it cannot load
 	if ($this_ical === false) {
@@ -24,19 +19,17 @@ foreach ($calendar_urls as $name => $url) {
 
 	$item_count = 0;
 
-	// Loop through events
-	foreach($this_ical->events() as $event) {
-		// Set array index as date
-		$target =  date("Ymd",strtotime($event['DTSTART']));
+	// Get events within date range
+	$start_date = $days_back == -1 ? false : "-{$days_back} days";
+	$end_date = $days_forward == -1 ? false : "+{$days_forward} days";
+	$events = $this_ical->eventsFromRange($start_date, $end_date);
 
-		// Skip items out of the date range
-		if (($days_back != -1 && strtotime($event['DTSTART']) < strtotime("-" . $days_back . " days")) ||
-			($days_forward != -1 && strtotime($event['DTSTART']) > strtotime("+" . $days_forward . " days"))) {
-			continue;
-		}
+	foreach ($events as $event) {
+		// Set array index as date
+		$target = date("Ymd", strtotime($event->dtstart));
 
 		// If the item is marked completed, ignore it
-		if (!empty($skip_string) && strpos($event["DESCRIPTION"], $skip_string) !== false) {
+		if (!empty($skip_string) && strpos($event->description, $skip_string) !== false) {
 			continue;
 		}
 
@@ -47,11 +40,11 @@ foreach ($calendar_urls as $name => $url) {
 
 		// Add to the array index
 		array_push($result_array[$target], array(
-			"time" => date("g:i a",strtotime($event['DTSTART'])),
-			"date" => date("l, F j", strtotime($event['DTSTART'])),
-			"timestamp" => $event['DTSTART'],
-			"desc" => $event["DESCRIPTION"],
-			"title" => $event["SUMMARY"],
+			"time" => date("g:i a", strtotime($event->dtstart)),
+			"date" => date("l, F j", strtotime($event->dtstart)),
+			"timestamp" => $event->dtstart,
+			"desc" => stripslashes($event->description),
+			"title" => stripslashes($event->summary),
 			"calendar" => $name
 		));
 	}
@@ -78,17 +71,12 @@ foreach ($result_array as $events) {
 	}
 
 	// Display the container for the date
-    echo "<div class='day'>\n" .
+	echo "<div class='day'>\n" .
 		"\t<div class='heading'>". $events[0]['date'] ."</div>\n" .
 		"\t<div class='events'>\n";
 
-	// Since ICS gives us events in an arbitrary order, rearrange them
-	usort($events, function ($a, $b) {
-		return date("U", strtotime($a['timestamp'])) - date("U", strtotime($b['timestamp']));
-	});
-
 	// Loop through each event on this date
-    foreach ($events as $event) {
+	foreach ($events as $event) {
 		// If we've displayed the maximum number of events, stop.
 		if ($stop) {
 			break;
@@ -124,9 +112,9 @@ foreach ($result_array as $events) {
 			"\t\t\t<div class='time'>" . $event['time'] . "</div>\n" .
 			"\t\t\t<div class='event'>" . $event['title'] . "</div>\n" .
 			"\t\t</div>\n";
-    }
+		}
 
-    echo "\t</div>\n</div>\n";
+		echo "\t</div>\n</div>\n";
 }
 
 ?>

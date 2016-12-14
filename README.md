@@ -9,6 +9,17 @@ This software utilizes AJAX to load the output of a PHP script. This
 requires that page be reached via the same web server that is serving
 the PHP script, as AJAX cannot load external or local sources.
 
+PHP 5.3.2 or higher is required on the server to run this software.
+
+[Composer](https://getcomposer.org/) is required to install necessary
+development dependencies, but not required when using a prepackaged
+release.
+
+# Getting Started #
+
+1. Drop this directory onto your web server.
+2. Follow the configuration instructions below.
+
 # Configuration #
 This repository contains an example configuration file, `config.example.php`.
 This file must be renamed to `config.php` in order to be read properly.
@@ -25,12 +36,12 @@ _Events_
 - `$skip_keyword` - Any event with this string located anywhere in its
     description will not be displayed. To use no string, use `false`.
 
-_Highlight/Darkening_
+_Highlight/Darken_
 - `$highlight_today` - Set to `true` to highlight events that occur today. Set
     to `false` otherwise.
 - `$highlight_calendars` - Add each calendar you wish to always highlight. For
     example, use `array("cal1", "cal2")` to highlight calendar sources named
-    "cal1" and "cal2". To highlgiht no calendars, use `false`.
+    "cal1" and "cal2". To highlight no calendars, use `false`.
 - `$highlight_keyword` - Any event with this string located anywhere in its
     description will be highlighted. To use no string, use `false`.
 - `$darken_past` - Set to `true` to darken events that have passed. Set
@@ -46,7 +57,8 @@ _Error Reporting_
 _Reload time_
 - By default, data is reloaded from the ICS files every 60 seconds. This value
     can be changed in the `ajaxcall()` function of `functions.js`. Please note
-    that the value is in milliseconds.
+    that the value is in milliseconds. Please note that this interval should not
+    be set too low, as calendar reloads are somewhat heavy.
 
 _Styles_
 - The background image is `bg.jpg` and can be replaced by any image. By default,
@@ -54,5 +66,4 @@ _Styles_
     the `style.css` file.
 
 # Attributions #
-This project relies on the _ics-parser_ project on Google Code. The repository
-  can be found at https://code.google.com/p/ics-parser/.
+This project relies on the [ics-parser library](https://github.com/u01jmg3/ics-parser/).
