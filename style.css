@@ -113,3 +113,9 @@ body {
 	margin-left: 61px;
 	margin-right: 3px;
 }
+
+#loader-preload {
+	width: 0;
+	height: 0;
+	overflow: hidden;
+}
