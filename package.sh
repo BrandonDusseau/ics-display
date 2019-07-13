@@ -6,17 +6,18 @@ read version
 
 dirname="ics-display-${version}"
 mkdir "$dirname"
-cp -tR $dirname \
-  src/bg.jpg \
-  src/calendar.js \
-  src/config.example.php \
-  src/index.html \
-  src/loader.gif \
-  src/schedule.php \
-  src/style.css \
-  src/vendor \
-  LICENSE \
-  changelog.txt
+cp src/bg.jpg "$dirname"
+cp src/calendar.js "$dirname"
+cp src/config.example.php "$dirname"
+cp src/index.html "$dirname"
+cp src/loader.gif "$dirname"
+cp src/schedule.php "$dirname"
+cp src/style.css "$dirname"
+cp LICENSE "$dirname"
+cp changelog.txt "$dirname"
+cp README.md "$dirname"
+cp screenshot.png "$dirname"
+cp -r src/vendor "$dirname"
 
 if [ ! -d releases ]; then
   mkdir releases
