@@ -3,6 +3,10 @@
 require_once __DIR__ . "/vendor/autoload.php";
 require_once __DIR__ . "/config.php";
 
+if ($timezone_override !== false) {
+	date_default_timezone_set($timezone_override);
+}
+
 // Create empty array for all relevant events
 $result_array = array();
 $failed = false;
@@ -116,5 +120,3 @@ foreach ($result_array as $events) {
 
 		echo "\t</div>\n</div>\n";
 }
-
-?>

@@ -9,7 +9,7 @@ This software utilizes AJAX to load the output of a PHP script. This
 requires that page be reached via the same web server that is serving
 the PHP script, as AJAX cannot load external or local sources.
 
-PHP 5.3.2 or higher is required on the server to run this software.
+PHP 5.3.9 or higher is required on the server to run this software.
 
 [Composer](https://getcomposer.org/) is required to install necessary
 development dependencies, but not required when using a prepackaged
@@ -35,6 +35,11 @@ _Events_
     display events. Set this to `-1` for no limit
 - `$skip_keyword` - Any event with this string located anywhere in its
     description will not be displayed. To use no string, use `false`.
+
+_Time Zone_
+- `$timezone_override` - If you are unable to modify your PHP instance's configured
+    time zone, you can use this option to set the time zone events are displayed in,
+    e.g. `"America/Detroit"`. Set to `false` to disable.
 
 _Highlight/Darken_
 - `$highlight_today` - Set to `true` to highlight events that occur today. Set

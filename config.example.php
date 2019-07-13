@@ -21,4 +21,4 @@ $calendar_urls = array(
 	"cal2" => "http://www.example.com/cal2.ics"
 );
 
-?>
+$timezone_override = false;
