@@ -1,0 +1,8 @@
+# This compose file is for local development only.
+services:
+  web:
+    image: php:7.2-apache
+    ports:
+    - "4000:80"
+    volumes:
+    - ./src:/var/www/html/
