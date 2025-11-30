@@ -1,4 +1,11 @@
+# NOTE - Abandoned project
+
+This is a project I wrote in college to help me keep track of homework assignments. That was over a decade agao now. I no longer want to commit time to updating this project. If you find this project to be valuable to you, please feel free to fork it, adhering to the terms outlined in `LICENSE`.
+
+I will no longer offer support for this project.
+
 # ICS Calendar Display
+
 The goal of this software is to create a customizable 10-foot style user
 interface to display the contents of one or more iCal files.
 
